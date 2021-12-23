@@ -10,12 +10,36 @@
 <body>
     <header>
         <a href="#" class="highscore">View Highscores</a>
-        <div>Timer</div>
+        <div>Time: </div><span id="time-left">80</span> <!--displays time left starting from 80-->
     </header>
     <main>
-        <h1>Code Quiz Challenge</h1>
-        <p>Answer coding related questions before the timer runs out. Getting a question wrong will take time off the clock</p>
-        <button>Start Quiz</button>
+        <div id="welcome">
+            <h1>Code Quiz Challenge</h1>
+            <p>Answer coding related questions before the timer runs out. Getting a question wrong will take time off the clock</p>
+            <button>Start Quiz</button>
+        </div>
+        <div id="quiz">
+            <h1 id="question"></h1>
+            <button id="answer"></button>
+            <button id="answer"></button>
+            <button id="answer"></button>
+            <button id="answer"></button>
+            <div id="answer-result"></div>
+        </div>
+        <div id="quiz-end">
+            <h1 id="quiz-result"></h1>
+            <p id="result-prompt"></p>
+            <form action="" id="score">
+                <label for="initials">Enter your Initials here</label>
+                <input type="text" id="score-initials" name="initials">
+                <input type="submit" value="Submit Score" id="submit-score">
+            </form>
+        </div>
+        <div id="score-page">
+            <h1>Highscores</h1>
+            <div id="score-display"></div>
+            <button id="clear-scores">Clear</button>
+        </div>
     </main>
     <script src="./script.js"></script>
 </body>

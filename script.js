@@ -37,4 +37,41 @@ function timer() {
     }, 1000);
   }
   
+var questionBank = [
+    {
+    question = "Which of these are the names of Joe's cats?",
+    answers = [
+        { answerText = "Shiva / Bahamut",
+        answerValue = true, },
+        { answerText = "Shiva / Ifrit",
+        answerValue = false, },
+        { answerText = "Rahum / Bahamut",
+        answerValue = false,},
+        { answerText= "Rahum / Ifrit",
+        answerValue = false,}]
+    },
+    {
+    question = "Hammurabi's code, the oldest known legal code, comes from where?",
+    answers = [
+            { answerText = "Babylon",
+            answerValue = true, },
+            { answerText = "Ancient Egypt",
+            answerValue = false, },
+            { answerText = "Ancient Greece",
+            answerValue = false,},
+            { answerText= "Ancient Rome",
+            answerValue = false,}]
+    }
+]
+
+  // Quiz start
+let quizBase = document.querySelector("#welcome");
+let startButton = document.querySelector("#quiz-button")
+
+  function quizStart() {
+quizBase.setAttribute("style", "display: none;");
+
+  }
+
+startButton.addEventListener("click", quizStart);
   

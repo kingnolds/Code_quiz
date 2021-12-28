@@ -10,6 +10,7 @@
 //          if incorrect timer loses time
 //          once all questions are answered input name or initials and submit
 //          open highscore page
+//              EXTRA: randomize quiz questions and answers
 
 // TODO: Make Highscore page
 //          on end of quiz and submit highscore or click view highscore show screen with all highscores and a clear button
@@ -39,37 +40,47 @@ function timer() {
   
 var questionBank = [
     {
-    question = "Which of these are the names of Joe's cats?",
-    answers = [
-        { answerText = "Shiva / Bahamut",
-        answerValue = true, },
-        { answerText = "Shiva / Ifrit",
-        answerValue = false, },
-        { answerText = "Rahum / Bahamut",
-        answerValue = false,},
-        { answerText= "Rahum / Ifrit",
-        answerValue = false,}]
+    question: "Which of these are the names of Joe's cats?",
+    answers: [
+        { answerText: "Shiva / Bahamut",
+        answerValue: true, },
+        { answerText: "Shiva / Ifrit",
+        answerValue: false, },
+        { answerText: "Rahum / Bahamut",
+        answerValue: false,},
+        { answerText: "Rahum / Ifrit",
+        answerValue: false,},
+    ]
     },
     {
-    question = "Hammurabi's code, the oldest known legal code, comes from where?",
-    answers = [
-            { answerText = "Babylon",
-            answerValue = true, },
-            { answerText = "Ancient Egypt",
-            answerValue = false, },
-            { answerText = "Ancient Greece",
-            answerValue = false,},
-            { answerText= "Ancient Rome",
-            answerValue = false,}]
+    question: "Hammurabi's code, the oldest known legal code, comes from where?",
+    answers: [
+            { answerText: "Babylon",
+            answerValue: true, },
+            { answerText: "Ancient Egypt",
+            answerValue: false, },
+            { answerText: "Ancient Greece",
+            answerValue: false,},
+            { answerTex: "Ancient Rome",
+            answerValue: false,}]
     }
 ]
 
   // Quiz start
 let quizBase = document.querySelector("#welcome");
-let startButton = document.querySelector("#quiz-button")
+let startButton = document.querySelector("#quiz-button");
+let quizGame = document.querySelector("#quiz");
+let quizQuestion = document.querySelector("#question");
+var quizAnswers = document.getElementsByClassName("answer");
+let quizIndex = 0
 
   function quizStart() {
-quizBase.setAttribute("style", "display: none;");
+quizBase.setAttribute("style", "display: none;"); //hide frontpage
+quizQuestion.textContent = questionBank[quizIndex].question;
+for (let i = 0; i < quizAnswers.length; i++) {
+    quizAnswers[i].innerHTML = questionBank[quizIndex].answers[i].answerText;
+    
+}
 
   }
 

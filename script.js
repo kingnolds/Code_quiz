@@ -20,25 +20,30 @@
 // Timer
 const timerDisplay = document.querySelector("#time-left"); 
 let timeLeft = 80
+let timeInterval
 
 function timer() {
     timeLeft = 80;
-  
+    timerDisplay.textContent = timeLeft;
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-    let timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
       timerDisplay.textContent = timeLeft;
       timeLeft--; // countdown by 1
       timerDisplay.textContent = timeLeft; // display remaining time
   
-      if(timeLeft === 0) { // when timer hits zero
+      if(timeLeft <= 0) { // when timer hits zero
+        timeLeft = 0
+        timerDisplay.textContent = timeLeft;
         clearInterval(timeInterval); // stop the timer
         
-        // gameOver(); 
+        gameOver(); 
       }
   
     }, 1000);
   }
   
+// all questions available 
+
 let questionList = [
     {
     question: "Which of these are the names of Joe's cats?",
@@ -57,6 +62,9 @@ const quizBase = document.querySelector("#welcome");
 const startButton = document.querySelector("#quiz-button");
 const quizGame = document.querySelector("#quiz");
 const quizQuestion = document.querySelector("#question");
+const quizEnd = document.querySelector("#quiz-end");
+const highScores = document.querySelector("#score-page");
+const playAgain = document.querySelector(".play-again");
 var quizAnswers = document.getElementsByClassName("answer");
 let rightWrong = document.querySelector("#answer-result");
 let quizIndex = 0
@@ -72,19 +80,24 @@ function showQuestion() {
   }
 
 function newQuestion() {
-    if (quizIndex < shuffledQuiz.length) {
+    if (quizIndex < (shuffledQuiz.length-1)) {
         quizIndex++; 
         showQuestion();
     } else {
         gameOver()
     }
 }
-
+console.log(quizBase)
 function quizStart() {
     quizBase.setAttribute("style", "display: none;"); //hide frontpage
+    quizEnd.setAttribute("style", "display: none;"); //hide end page
+    highScores.setAttribute("style", "display: none;"); //hide highscores page
+    quizGame.setAttribute("style", "display: block;"); // display quiz
+
     shuffledQuiz = questionList.sort((a, b) => 0.5 - Math.random());
+    quizIndex = 0
     showQuestion();
-    quizBase.setAttribute("style", "display: block;"); //display quiz page
+    // quizBase.setAttribute("style", "display: block;"); //display quiz page
     timer(); //start time
 }
 
@@ -98,8 +111,8 @@ function readAnswer(answer) {
     newQuestion();
 }
 
-
 startButton.addEventListener("click", quizStart); // start when start button is pressed  \
+playAgain.addEventListener("click", quizStart);
 document.querySelectorAll(".answer").forEach(element => {
     element.addEventListener("click", event =>{
     const clicked = event.target;
@@ -109,3 +122,28 @@ document.querySelectorAll(".answer").forEach(element => {
 })
     
 });
+
+// gameover: stop timer at 0 or set to 0 if lower
+//      hide quiz screen, show end game screen
+//      display too bad try again message if score is 0
+//      display you win and enter your initials if score is > 0
+//      once you enter score send to highscore screen
+const quizResult = document.querySelector("#quiz-result");
+const endPrompt = document.querySelector("#result-prompt");
+const scoreInput = document.querySelector("#score");
+
+function gameOver() {
+    clearInterval(timeInterval)
+    quizGame.setAttribute("style", "display: none;")
+    quizEnd.setAttribute("style", "display: block;")
+    if (timeLeft <= 0) {
+        timeLeft = 0;
+        quizResult.textContent = "Game Over!"
+        endPrompt.textContent = "Better luck next time!"
+        scoreInput.setAttribute("style", "display: none;");
+    } else {
+        quizResult.textContent = "You Win!"
+        endPrompt.textContent = "Save your Highscore!"
+    }
+
+}

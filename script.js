@@ -18,13 +18,14 @@
 
 
 // Timer
-let timerDisplay = document.querySelector("#time-left"); 
+const timerDisplay = document.querySelector("#time-left"); 
+let timeLeft = 80
 
 function timer() {
-    var timeLeft = 80;
+    timeLeft = 80;
   
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-    var timeInterval = setInterval(function () {
+    let timeInterval = setInterval(function () {
       timerDisplay.textContent = timeLeft;
       timeLeft--; // countdown by 1
       timerDisplay.textContent = timeLeft; // display remaining time
@@ -38,51 +39,73 @@ function timer() {
     }, 1000);
   }
   
-var questionBank = [
+let questionList = [
     {
     question: "Which of these are the names of Joe's cats?",
-    answers: [
-        { answerText: "Shiva / Bahamut",
-        answerValue: true, },
-        { answerText: "Shiva / Ifrit",
-        answerValue: false, },
-        { answerText: "Rahum / Bahamut",
-        answerValue: false,},
-        { answerText: "Rahum / Ifrit",
-        answerValue: false,},
-    ]
+    answers: ["Shiva / Bahamut", "Shiva / Ifrit", "Rahum / Bahamut", "Rahum / Ifrit"],
+    correct: 1
     },
     {
     question: "Hammurabi's code, the oldest known legal code, comes from where?",
-    answers: [
-            { answerText: "Babylon",
-            answerValue: true, },
-            { answerText: "Ancient Egypt",
-            answerValue: false, },
-            { answerText: "Ancient Greece",
-            answerValue: false,},
-            { answerTex: "Ancient Rome",
-            answerValue: false,}]
+    answers: ["Ancient Egypt", "Ancient Greece","Babylon","Ancient Rome"],
+    correct: 3
     }
 ]
 
   // Quiz start
-let quizBase = document.querySelector("#welcome");
-let startButton = document.querySelector("#quiz-button");
-let quizGame = document.querySelector("#quiz");
-let quizQuestion = document.querySelector("#question");
+const quizBase = document.querySelector("#welcome");
+const startButton = document.querySelector("#quiz-button");
+const quizGame = document.querySelector("#quiz");
+const quizQuestion = document.querySelector("#question");
 var quizAnswers = document.getElementsByClassName("answer");
+let rightWrong = document.querySelector("#answer-result");
 let quizIndex = 0
+let shuffledQuiz = []
 
-  function quizStart() {
-quizBase.setAttribute("style", "display: none;"); //hide frontpage
-quizQuestion.textContent = questionBank[quizIndex].question;
-for (let i = 0; i < quizAnswers.length; i++) {
-    quizAnswers[i].innerHTML = questionBank[quizIndex].answers[i].answerText;
+function showQuestion() {
     
-}
-
+    quizQuestion.textContent = shuffledQuiz[quizIndex].question; // load question into the h1
+    for (let i = 0; i < quizAnswers.length; i++) {
+    quizAnswers[i].innerHTML = shuffledQuiz[quizIndex].answers[i];    
+    } // put answer options into every button
+    
   }
 
-startButton.addEventListener("click", quizStart);
-  
+function newQuestion() {
+    if (quizIndex < shuffledQuiz.length) {
+        quizIndex++; 
+        showQuestion();
+    } else {
+        gameOver()
+    }
+}
+
+function quizStart() {
+    quizBase.setAttribute("style", "display: none;"); //hide frontpage
+    shuffledQuiz = questionList.sort((a, b) => 0.5 - Math.random());
+    showQuestion();
+    quizBase.setAttribute("style", "display: block;"); //display quiz page
+    timer(); //start time
+}
+
+function readAnswer(answer) {
+    if (shuffledQuiz[quizIndex].correct == answer) {
+        rightWrong.textContent = "Correct!"
+    } else {
+        timeLeft -= 15;
+        rightWrong.textContent = "Wrong."
+    }
+    newQuestion();
+}
+
+
+startButton.addEventListener("click", quizStart); // start when start button is pressed  \
+document.querySelectorAll(".answer").forEach(element => {
+    element.addEventListener("click", event =>{
+    const clicked = event.target;
+    if (clicked.matches("button")) {
+        readAnswer(clicked.value)
+    }
+})
+    
+});

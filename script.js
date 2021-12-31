@@ -87,12 +87,12 @@ function newQuestion() {
         gameOver()
     }
 }
-console.log(quizBase)
+
 function quizStart() {
     quizBase.setAttribute("style", "display: none;"); //hide frontpage
     quizEnd.setAttribute("style", "display: none;"); //hide end page
     highScores.setAttribute("style", "display: none;"); //hide highscores page
-    quizGame.setAttribute("style", "display: block;"); // display quiz
+    quizGame.setAttribute("style", "display: flex;"); // display quiz
 
     shuffledQuiz = questionList.sort((a, b) => 0.5 - Math.random());
     quizIndex = 0
@@ -101,12 +101,22 @@ function quizStart() {
     timer(); //start time
 }
 
+let showRightWrong
+
 function readAnswer(answer) {
     if (shuffledQuiz[quizIndex].correct == answer) {
         rightWrong.textContent = "Correct!"
+        clearTimeout(showRightWrong);
+        showRightWrong = setTimeout(function () {
+            rightWrong.textContent = ""
+        }, 1500);
     } else {
         timeLeft -= 15;
         rightWrong.textContent = "Wrong."
+        clearTimeout(showRightWrong);
+        showRightWrong = setTimeout(function () {
+            rightWrong.textContent = ""
+        }, 1500);
     }
     newQuestion();
 }
@@ -144,6 +154,17 @@ function gameOver() {
     } else {
         quizResult.textContent = "You Win!"
         endPrompt.textContent = "Save your Highscore!"
+        scoreInput.setAttribute("style", "display: block;");
     }
 
 }
+
+// highscore page
+//    hide game over screen show highscore page
+//    input and sort high scores 
+//    clear highscores button and play again button
+//    highscores set to local storage
+
+let scores = [];
+
+

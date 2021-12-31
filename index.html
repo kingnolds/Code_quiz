@@ -10,12 +10,12 @@
 <body>
     <header>
         <a href="#" class="highscore">View Highscores</a>
-        <div>Time: </div><span id="time-left">80</span> <!--displays time left starting from 80-->
+        <div>Time: <span id="time-left">80</span></div> <!--displays time left starting from 80-->
     </header>
     <main>
         <div id="welcome">
             <h1>Code Quiz Challenge</h1>
-            <p>Answer coding related questions before the timer runs out. Getting a question wrong will take time off the clock</p>
+            <p>Answer all of the coding related questions before the timer runs out. Getting a question wrong will take time off the clock</p>
             <button id="quiz-button">Start Quiz</button>
         </div>
         <div id="quiz">
@@ -38,8 +38,11 @@
         </div>
         <div id="score-page">
             <h1>Highscores</h1>
-            <div id="score-display"></div>
+            <div id="score-display">
+                <ul id="score-list"></ul>
+            </div>
             <button id="clear-scores">Clear</button>
+            <button class="play-again">Play Again?</button>
         </div>
     </main>
     <script src="./script.js"></script>

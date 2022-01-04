@@ -44,16 +44,16 @@ function timer() {
   
 // all questions available 
 
-let questionList = [
+const questionList = [
     {
     question: "Which of these are the names of Joe's cats?",
     answers: ["Shiva / Bahamut", "Shiva / Ifrit", "Rahum / Bahamut", "Rahum / Ifrit"],
-    correct: 1
+    correct: "Shiva / Bahamut"
     },
     {
     question: "Hammurabi's code, the oldest known legal code, comes from where?",
-    answers: ["Ancient Egypt", "Ancient Greece","Babylon","Ancient Rome"],
-    correct: 3
+    answers: ["Babylon", "Ancient Egypt", "Ancient Greece","Ancient Rome"],
+    correct: "Babylon"
     }
 ]
 
@@ -69,12 +69,13 @@ var quizAnswers = document.getElementsByClassName("answer");
 let rightWrong = document.querySelector("#answer-result");
 let quizIndex = 0
 let shuffledQuiz = []
+let shuffledAnswers = []
 
 function showQuestion() {
     
     quizQuestion.textContent = shuffledQuiz[quizIndex].question; // load question into the h1
     for (let i = 0; i < quizAnswers.length; i++) {
-    quizAnswers[i].innerHTML = shuffledQuiz[quizIndex].answers[i];    
+    quizAnswers[i].textContent = shuffledQuiz[quizIndex].answers[i];    
     } // put answer options into every button
     
   }
@@ -84,7 +85,10 @@ function newQuestion() {
         quizIndex++; 
         showQuestion();
     } else {
-        gameOver()
+        clearInterval(timeInterval)
+        setTimeout(function() {
+            gameOver()
+        }, 500)
     }
 }
 
@@ -95,6 +99,13 @@ function quizStart() {
     quizGame.setAttribute("style", "display: flex;"); // display quiz
 
     shuffledQuiz = questionList.sort((a, b) => 0.5 - Math.random());
+    for (let i = 0; i < questionList.length; i++) {
+        shuffledAnswers = questionList[i].answers.sort((a, b) => 0.5 - Math.random());
+        shuffledQuiz.answers = shuffledAnswers
+    }
+    console.log(shuffledAnswers)
+    console.log(questionList)
+    
     quizIndex = 0
     showQuestion();
     // quizBase.setAttribute("style", "display: block;"); //display quiz page
@@ -102,9 +113,12 @@ function quizStart() {
 }
 
 let showRightWrong
-
+console.log(questionList)
 function readAnswer(answer) {
-    if (shuffledQuiz[quizIndex].correct == answer) {
+    console.log(answer)
+    console.log(questionList)
+    console.log(questionList[quizIndex].answers[0])
+    if (questionList[quizIndex].correct === answer) {
         rightWrong.textContent = "Correct!"
         clearTimeout(showRightWrong);
         showRightWrong = setTimeout(function () {
@@ -127,7 +141,7 @@ document.querySelectorAll(".answer").forEach(element => {
     element.addEventListener("click", event =>{
     const clicked = event.target;
     if (clicked.matches("button")) {
-        readAnswer(clicked.value)
+        readAnswer(clicked.textContent)
     }
 })
     
@@ -158,6 +172,27 @@ function gameOver() {
     }
 
 }
+
+function toHighscorePage() {
+    quizEnd.setAttribute("style", "display: none;");
+    quizBase.setAttribute("style", "display: none;");
+    quizGame.setAttribute("style", "display: none;");
+    highScores.setAttribute("style", "display: block;");
+    
+}
+
+const submitScoreBtn = document.querySelector("#submit-score")
+const initialsInput = document.querySelector("#score-initials")
+
+submitScoreBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    let playerScore = {
+        initials: initialsInput.value,
+        time: timeLeft.value
+    }
+    localStorage.setItem("playerScore", JSON.stringify("playerScore"));
+    toHighscorePage()
+})
 
 // highscore page
 //    hide game over screen show highscore page

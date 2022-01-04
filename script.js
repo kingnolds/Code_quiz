@@ -64,13 +64,15 @@ const quizGame = document.querySelector("#quiz");
 const quizQuestion = document.querySelector("#question");
 const quizEnd = document.querySelector("#quiz-end");
 const highScores = document.querySelector("#score-page");
-const playAgain = document.querySelector(".play-again");
+const playAgain = document.getElementsByClassName("play-again");
+const scoreList = document.querySelector("#score-list")
 var quizAnswers = document.getElementsByClassName("answer");
 let rightWrong = document.querySelector("#answer-result");
 let quizIndex = 0
 let shuffledQuiz = []
 let shuffledAnswers = []
 
+console.log(playAgain)
 function showQuestion() {
     
     quizQuestion.textContent = shuffledQuiz[quizIndex].question; // load question into the h1
@@ -136,7 +138,11 @@ function readAnswer(answer) {
 }
 
 startButton.addEventListener("click", quizStart); // start when start button is pressed  \
-playAgain.addEventListener("click", quizStart);
+for (let i = 0; i < playAgain.length; i++) {
+    playAgain[i].addEventListener("click", quizStart)
+    }
+    
+
 document.querySelectorAll(".answer").forEach(element => {
     element.addEventListener("click", event =>{
     const clicked = event.target;
@@ -183,16 +189,8 @@ function toHighscorePage() {
 
 const submitScoreBtn = document.querySelector("#submit-score")
 const initialsInput = document.querySelector("#score-initials")
+const clearScores = document.querySelector("#clear-scores")
 
-submitScoreBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-    let playerScore = {
-        initials: initialsInput.value,
-        time: timeLeft.value
-    }
-    localStorage.setItem("playerScore", JSON.stringify("playerScore"));
-    toHighscorePage()
-})
 
 // highscore page
 //    hide game over screen show highscore page
@@ -202,4 +200,52 @@ submitScoreBtn.addEventListener("click", function (event) {
 
 let scores = [];
 
+function renderScores() {
+    scoreList.innerHTML = "";
 
+    for (let i = 0; i < scores.length; i++) {
+        let score = scores[i];
+        let scoreLi = document.createElement("li");
+        scoreLi.textContent = `${score.initials} ${score.time}`;
+        console.log(score)
+        scoreList.appendChild(scoreLi)
+    }
+}
+
+function init() {
+    let storedScores = JSON.parse(localStorage.getItem("scores"));
+
+    if (storedScores !== null) {
+        scores = storedScores;
+    }
+    renderScores();
+}
+
+function storeScores() {
+    localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+
+submitScoreBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    let playerScore = {
+        initials: initialsInput.value.trim(),
+        time: timeLeft
+    }
+    if(playerScore.initials === "") {
+        return;
+    }
+    scores.push(playerScore);
+    storeScores();
+    renderScores();
+    toHighscorePage();
+})
+
+clearScores.addEventListener("click", function () {
+    scores = []
+    localStorage.removeItem("scores")
+    renderScores();
+})
+
+
+init();

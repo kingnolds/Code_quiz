@@ -253,6 +253,7 @@ submitScoreBtn.addEventListener("click", function (event) { // when scores are s
         return;
     }
     scores.push(playerScore); // add the submitted score to the scores list
+    initialsInput.value = "";
     storeScores();
     renderScores();
     toHighscorePage(); // send to highscore page

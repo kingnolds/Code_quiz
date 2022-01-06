@@ -25,6 +25,7 @@ header {
     width: 100%;
     height: fit-content;
     padding: 1em;
+    background-color: rebeccapurple;
 }
 
 .highscore-redirect:hover{

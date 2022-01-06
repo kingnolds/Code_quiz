@@ -19,11 +19,11 @@
 
 // Timer
 const timerDisplay = document.querySelector("#time-left"); 
-let timeLeft = 80
+let timeLeft = 60
 let timeInterval
 
 function timer() {
-    timeLeft = 80;
+    timeLeft = 60;
     timerDisplay.textContent = timeLeft;
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
     timeInterval = setInterval(function () {
@@ -54,7 +54,32 @@ const questionList = [
     question: "Hammurabi's code, the oldest known legal code, comes from where?",
     answers: ["Babylon", "Ancient Egypt", "Ancient Greece","Ancient Rome"],
     correct: "Babylon"
-    }
+    },
+    {
+    question: "Who is Morse Code named after?",
+    answers: ["Samuel Morse", "Matthew Morse", "John Morse", "Eli Morse"],
+    correct: "Samuel Morse"
+    },
+    {
+    question: "What TV show has a book called 'The Bro Code'?",
+    answers: ["How I Met Your Mother", "The League", "Seinfeld", "Friends"],
+    correct: "How I Met Your Mother"
+    },
+    {
+    question: "In the Code systems used by many Hospitals, what does Code Blue mean?",
+    answers: ["Medical Emergency", "Fire", "Weapon", "Sad Doctor"],
+    correct: "Medical Emergency"
+    },
+    {
+    question: "The US Military famously recruited what Native American Tribe as Code Talkers in WWII?",
+    answers: ["Navajo", "Cherokee", "Sioux", "Caddo"],
+    correct: "Navajo"
+    },
+    {
+    question: "What is the Code of Conduct followed by medieval Knights?",
+    answers: ["Chivalric Code", "Chauceric Code", "Germanic Code", "Bushido Code"],
+    correct: "Chivalric Code"
+    },
 ]
 
   // Quiz start
@@ -68,9 +93,12 @@ const playAgain = document.getElementsByClassName("play-again");
 const scoreList = document.querySelector("#score-list")
 var quizAnswers = document.getElementsByClassName("answer");
 let rightWrong = document.querySelector("#answer-result");
+const viewHighscores = document.querySelector('.highscore-redirect');
+const header = document.querySelector("#header")
 let quizIndex = 0
 let shuffledQuiz = []
 let shuffledAnswers = []
+
 
 console.log(playAgain)
 function showQuestion() {
@@ -98,6 +126,7 @@ function quizStart() {
     quizBase.setAttribute("style", "display: none;"); //hide frontpage
     quizEnd.setAttribute("style", "display: none;"); //hide end page
     highScores.setAttribute("style", "display: none;"); //hide highscores page
+    header.setAttribute("style", "visibility: visible;"); // show header if coming from highscore page
     quizGame.setAttribute("style", "display: flex;"); // display quiz
 
     shuffledQuiz = questionList.sort((a, b) => 0.5 - Math.random());
@@ -122,24 +151,36 @@ function readAnswer(answer) {
     console.log(questionList[quizIndex].answers[0])
     if (questionList[quizIndex].correct === answer) {
         rightWrong.textContent = "Correct!"
+        rightWrong.classList.add("correct");
+        rightWrong.setAttribute("style", "visibility: visible;")
         clearTimeout(showRightWrong);
         showRightWrong = setTimeout(function () {
             rightWrong.textContent = ""
-        }, 1500);
+            rightWrong.classList.remove("correct");
+        }, 1000);
     } else {
         timeLeft -= 15;
         rightWrong.textContent = "Wrong."
+        rightWrong.classList.add("wrong");
+        rightWrong.setAttribute("style", "visibility: visible;")
         clearTimeout(showRightWrong);
         showRightWrong = setTimeout(function () {
             rightWrong.textContent = ""
-        }, 1500);
+            rightWrong.classList.remove("wrong");
+        }, 1000);
     }
     newQuestion();
 }
 
 startButton.addEventListener("click", quizStart); // start when start button is pressed  \
 for (let i = 0; i < playAgain.length; i++) {
-    playAgain[i].addEventListener("click", quizStart)
+    playAgain[i].addEventListener("click", function () {
+        quizEnd.setAttribute("style", "display: none;");
+        quizBase.setAttribute("style", "display: flex;");
+        quizGame.setAttribute("style", "display: none;");
+        highScores.setAttribute("style", "display: none;");
+        header.setAttribute("style", "visibility: visible;")
+    })
     }
     
 
@@ -165,12 +206,14 @@ const scoreInput = document.querySelector("#score");
 function gameOver() {
     clearInterval(timeInterval)
     quizGame.setAttribute("style", "display: none;")
-    quizEnd.setAttribute("style", "display: block;")
+    quizEnd.setAttribute("style", "display: flex;")
     if (timeLeft <= 0) {
         timeLeft = 0;
         quizResult.textContent = "Game Over!"
-        endPrompt.textContent = "Better luck next time!"
+        endPrompt.textContent = "You must answer all questions and get at least one correct. Better luck next time!"
         scoreInput.setAttribute("style", "display: none;");
+        rightWrong.classList.remove("correct");
+        rightWrong.classList.remove("wrong");
     } else {
         quizResult.textContent = "You Win!"
         endPrompt.textContent = "Save your Highscore!"
@@ -184,9 +227,9 @@ function toHighscorePage() {
     quizBase.setAttribute("style", "display: none;");
     quizGame.setAttribute("style", "display: none;");
     highScores.setAttribute("style", "display: block;");
-    
+    header.setAttribute("style", "visibility: hidden;")
 }
-
+console.log(header)
 const submitScoreBtn = document.querySelector("#submit-score")
 const initialsInput = document.querySelector("#score-initials")
 const clearScores = document.querySelector("#clear-scores")
@@ -200,13 +243,19 @@ const clearScores = document.querySelector("#clear-scores")
 
 let scores = [];
 
+function sortScores(a, b) {
+   return b.time - a.time;
+}
+
 function renderScores() {
     scoreList.innerHTML = "";
+
+    scores.sort(sortScores);
 
     for (let i = 0; i < scores.length; i++) {
         let score = scores[i];
         let scoreLi = document.createElement("li");
-        scoreLi.textContent = `${score.initials} ${score.time}`;
+        scoreLi.textContent = `${i+1}. ${score.initials} ${score.time}`;
         console.log(score)
         scoreList.appendChild(scoreLi)
     }
@@ -247,5 +296,6 @@ clearScores.addEventListener("click", function () {
     renderScores();
 })
 
+viewHighscores.addEventListener("click",toHighscorePage);
 
 init();

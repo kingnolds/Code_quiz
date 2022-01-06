@@ -6,7 +6,7 @@
 
 :root {
     --dark: navy;
-    --light: gold;
+    --light: rgb(230, 195, 0);
 }
 
 body {
@@ -23,7 +23,18 @@ header {
     justify-content: space-between;
     width: 100%;
     height: fit-content;
+    padding: 1em;
 }
+
+/* header a {
+    text-decoration: none;
+    color: var(--light);
+}
+
+header a:visited {
+    text-decoration: none;
+    color: var(--light);
+} */
 
 main {
     display: flex;
@@ -38,6 +49,10 @@ main {
     flex-flow: column wrap;
     justify-content: space-evenly;
     align-items: center;
+}
+
+#question {
+    padding: 1em;
 }
 
 #welcome p {
@@ -58,24 +73,102 @@ main {
 #quiz {
     display: none;
     flex-direction: column;
-
+    width: 90%;
 }
 
 .answer {
     width: 90%;
-    padding: 5px;
+    font-size: 1em;
+    padding: 1em;
     margin: 1em;
     text-decoration: none;
     background-color: turquoise;
     color: var(--dark);
     border: none;
     border-radius: 5px;
+    font-weight: bold;
+}
+
+#answer-result {
+    width: 90%;
+    justify-self: center;
+    margin-left: 1em;
+    border-radius: 5px;
+    color: var(--light);
 }
 
 #quiz-end{
     display: none;
+    padding: 1em;
+    flex-direction: column;
+}
+
+#quiz-result, #result-prompt, #score {
+    padding: .5em;
+    align-self: center;
 }
 
 #score-page {
     display: none;
+}
+
+#submit-score {
+    padding: 5px;
+    background-color: var(--light);
+    border-radius: 10px;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    border: 5px solid black;
+    font-size: 1.2em; 
+}
+
+.play-again {
+    padding: 5px;
+    background-color: turquoise;
+    border-radius: 10px;
+    color: var(--dark);
+    text-decoration: none;
+    cursor: pointer;
+    border: 5px solid darkgreen;
+    font-size: 1.2em; 
+}
+
+#clear-scores {
+    padding: 5px;
+    background-color: turquoise;
+    border-radius: 10px;
+    color: var(--dark);
+    text-decoration: none;
+    cursor: pointer;
+    border: 5px solid darkgreen;
+    font-size: 1.2em; 
+}
+
+#score-list {
+    padding: 1em;
+    color: var(--dark);
+    /* list-style: none;
+    counter-reset: item; */
+    font-weight: bold;
+}
+
+#score-list li {
+    padding: .5em;
+    background-color: lightsteelblue;
+}
+
+#score-list li:nth-child(odd) {
+    
+    background-color: whitesmoke;
+}
+
+.correct {
+    background-color: green;
+    padding: .5em;
+}
+
+.wrong {
+    background-color:firebrick;
+    padding: .5em;
 }

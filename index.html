@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <a href="#" class="highscore">View Highscores</a>
-        <div>Time: <span id="time-left">80</span></div> <!--displays time left starting from 80-->
+    <header id="header">
+        <p class="highscore-redirect">View Highscores</p>
+        <div>Time: <span id="time-left">60</span></div> <!--displays time left starting from 80-->
     </header>
     <main>
         <div id="welcome">
@@ -31,7 +31,7 @@
             <p id="result-prompt"></p>
             <form id="score">
                 <label for="initials">Enter your Initials here</label>
-                <input type="text" id="score-initials" name="initials">
+                <input type="text" id="score-initials" maxlength="3" size="5" name="initials">
                 <button id="submit-score">Submit Score</button>
             </form>
             <button class="play-again">Play Again?</button>
@@ -39,7 +39,7 @@
         <div id="score-page">
             <h1>Highscores</h1>
             <div id="score-display">
-                <ul id="score-list"></ul>
+                <ol id="score-list"></ol>
             </div>
             <button id="clear-scores">Clear</button>
             <button class="play-again">Play Again?</button>
